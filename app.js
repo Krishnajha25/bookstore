@@ -1,10 +1,31 @@
+const path = require('path')
 const express = require('express')
 const dotenv = require('dotenv')
+const morgan = require('morgan')
+const exphbs = require('express-handlebars')
+const connectDB = require('./config/db')
+const router = require('./routes/index')
 
 //Load config
 dotenv.config({path: './config/config.env'})
 
+connectDB()
 const app = express()
+
+if(process.env.NODE_ENV === 'development'){
+    app.use(morgan('dev'))
+}
+
+//Hnadlebars
+
+app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}))
+app.set('view engine', '.hbs')
+
+//Static folder
+app.use(express.static(path.join(__dirname, 'public')))
+
+//Routes
+app.use('/', router)
 
 const PORT = process.env.PORT || 3000
 

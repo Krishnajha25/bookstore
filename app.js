@@ -7,6 +7,7 @@ const passport = require('passport')
 const session = require('express-session')
 const connectDB = require('./config/db')
 const router = require('./routes/index')
+const routerAuth = require('./routes/auth')
 
 //Load config
 dotenv.config({path: './config/config.env'})
@@ -42,6 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //Routes
 app.use('/', router)
+app.use('/auth', routerAuth)
 
 const PORT = process.env.PORT || 3000
 

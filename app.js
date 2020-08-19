@@ -9,6 +9,7 @@ const MongoStore = require('connect-mongo')(session)
 const connectDB = require('./config/db')
 const router = require('./routes/index')
 const routerAuth = require('./routes/auth')
+const storiesRoute = require('./routes/stories')
 const mongoose = require('mongoose')
 
 //Load config
@@ -19,6 +20,10 @@ require('./config/passport')(passport)
 
 connectDB()
 const app = express()
+
+//Body parser
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 
 if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'))
@@ -47,6 +52,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 //Routes
 app.use('/', router)
 app.use('/auth', routerAuth)
+app.use('/stories', storiesRoute)
 
 const PORT = process.env.PORT || 3000
 

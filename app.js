@@ -11,6 +11,7 @@ const router = require('./routes/index')
 const routerAuth = require('./routes/auth')
 const storiesRoute = require('./routes/stories')
 const mongoose = require('mongoose')
+const { formatDate } = require('./helpers/hbs')
 
 //Load config
 dotenv.config({path: './config/config.env'})
@@ -30,7 +31,14 @@ if(process.env.NODE_ENV === 'development'){
 }
 
 //Handlebars
-app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}))
+app.engine('.hbs', 
+    exphbs({
+        helpers: {
+            formatDate,
+        },
+        defaultLayout: 'main', 
+        extname: '.hbs'
+}))
 app.set('view engine', '.hbs')
 
 //Session
